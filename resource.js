@@ -1,5 +1,5 @@
 let url =
-  "https://slvbudpeterm.blob.core.windows.net/recruitment/questions.json";
+  "https://cors-escape.herokuapp.com/https://slvbudpeterm.blob.core.windows.net/recruitment/questions.json";
 
 // Create the XHR object.
 function createCORSRequest(method, url) {
@@ -46,5 +46,3 @@ function makeCorsRequest() {
 
   xhr.send();
 }
-
-makeCorsRequest();
