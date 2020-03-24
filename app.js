@@ -96,13 +96,16 @@ closeQuestion = () => {
 addAnswer = id => {
   const existingData = JSON.parse(localStorage.getItem("data"));
   const newAnswer = document.getElementById("newAnswer").value;
-  existingData[id].answer = newAnswer;
-  localStorage.setItem("data", JSON.stringify(existingData));
 
-  const myList = document.getElementById("my-list");
-  myList.textContent = "";
-  listData();
-  showQuestion(existingData[id]);
+  if (newAnswer !== "") {
+    existingData[id].answer = newAnswer;
+    localStorage.setItem("data", JSON.stringify(existingData));
+
+    const myList = document.getElementById("my-list");
+    myList.textContent = "";
+    listData();
+    showQuestion(existingData[id]);
+  }
 };
 
 showQuestion = question => {
@@ -202,22 +205,22 @@ addQuestion = () => {
   const question = document.getElementById("question").value;
   const answer = document.getElementById("answer").value;
 
-  console.log(question, answer);
+  if (question !== "" && answer !== "") {
+    const newQuestion = {
+      question: question,
+      answer: answer,
+      created_at: Date.now(),
+      rate_stars: 0
+    };
 
-  const newQuestion = {
-    question: question,
-    answer: answer,
-    created_at: Date.now(),
-    rate_stars: 0
-  };
+    existingData.push(newQuestion);
 
-  existingData.push(newQuestion);
+    localStorage.setItem("data", JSON.stringify(existingData));
 
-  localStorage.setItem("data", JSON.stringify(existingData));
-
-  const myList = document.getElementById("my-list");
-  myList.textContent = "";
-  listData();
+    const myList = document.getElementById("my-list");
+    myList.textContent = "";
+    listData();
+  }
 };
 
 removeLocalStorage = () => {
@@ -250,10 +253,16 @@ newQustion = () => {
   button.appendChild(buttonText);
   button.onclick = addQuestion;
 
-  node.appendChild(label1);
-  node.appendChild(input1);
-  node.appendChild(label2);
-  node.appendChild(input2);
+  let rowQuestion = document.createElement("div");
+  rowQuestion.appendChild(label1);
+  rowQuestion.appendChild(input1);
+
+  let rowAnswer = document.createElement("div");
+  rowAnswer.appendChild(label2);
+  rowAnswer.appendChild(input2);
+
+  node.appendChild(rowQuestion);
+  node.appendChild(rowAnswer);
   node.appendChild(button);
 
   document.getElementById("selected").appendChild(node);

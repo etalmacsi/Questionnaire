@@ -1,48 +1,29 @@
 let url =
-  "https://cors-escape.herokuapp.com/https://slvbudpeterm.blob.core.windows.net/recruitment/questions.json";
+  "https://slvbudpeterm.blob.core.windows.net/recruitment/questions.json";
 
-// Create the XHR object.
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-  if ("withCredentials" in xhr) {
-    // XHR for Chrome/Firefox/Opera/Safari.
-    xhr.open(method, url, true);
-  } else if (typeof XDomainRequest != "undefined") {
-    // XDomainRequest for IE.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
-  } else {
-    // CORS not supported.
-    xhr = null;
-  }
-  return xhr;
-}
+const try1 = () => {
+  $.ajax({
+    url: url,
+    type: "GET",
+    dataType: "jsonp",
+    cors: false,
+    contentType: "application/json",
+    secure: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    },
+    success: function(result, status, xhr) {
+      console.log(result, status, xhr);
+    },
+    error: function(data) {
+      console.log(data);
+    }
+  });
+};
 
-// Helper method to parse the title tag from the response.
-function getTitle(text) {
-  return text.match("<title>(.*)?</title>")[1];
-}
+const try2 = () => {
+  fetch(url, { mode: "no-cors" }).then(response => console.log(response));
+};
 
-// Make the actual CORS request.
-function makeCorsRequest() {
-  // This is a sample server that supports CORS.
-
-  var xhr = createCORSRequest("GET", url);
-  if (!xhr) {
-    alert("CORS not supported");
-    return;
-  }
-
-  // Response handlers.
-  xhr.onload = function() {
-    var text = xhr.responseText;
-    var title = getTitle(text);
-    alert("Response from CORS request to " + url + ": " + title);
-  };
-
-  xhr.onerror = function() {
-    alert("Woops, there was an error making the request.");
-  };
-
-  xhr.send();
-}
+try1();
+try2();
